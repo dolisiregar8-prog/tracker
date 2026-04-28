@@ -9,83 +9,77 @@
 <title>Personal Tracker</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#0d1117;color:#e6edf3;font-family:-apple-system,'Inter',sans-serif;min-height:100vh;padding-bottom:90px;padding-top:env(safe-area-inset-top)}
+body{background:#0e1117;color:#dde6f0;font-family:-apple-system,'Inter',sans-serif;min-height:100vh;padding-bottom:90px;padding-top:env(safe-area-inset-top);overflow-x:hidden}
 input,select,button,textarea{font-family:inherit;outline:none}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
-/* ── PALETTE ── calming teal/sage/slate */
 :root{
-  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
-  --teal:#2dd4bf;--teal2:#14b8a6;--teal3:#0d9488;
-  --sage:#86efac;--sage2:#4ade80;
-  --sky:#7dd3fc;--sky2:#38bdf8;
-  --lavender:#c4b5fd;--lavender2:#a78bfa;
-  --rose:#fda4af;--rose2:#fb7185;
-  --amber:#fcd34d;--amber2:#fbbf24;
-  --slate:#94a3b8;--slate2:#64748b;
-  --border:rgba(255,255,255,.07);
+  --bg:#0e1117;--bg2:#151b24;--bg3:#1c2433;
+  --mint:#6ee7b7;--mint2:#34d399;--mint3:#10b981;
+  --sky:#93c5fd;--sky2:#60a5fa;--sky3:#3b82f6;
+  --lilac:#c4b5fd;--lilac2:#a78bfa;--lilac3:#8b5cf6;
+  --peach:#fca5a5;--peach2:#f87171;
+  --sand:#fde68a;--sand2:#fbbf24;
+  --slate:#8899aa;--slate2:#55667a;
+  --border:rgba(255,255,255,.06);
   --card:rgba(255,255,255,.03);
 }
 
+/* blobs */
 .blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
-.b1{top:-100px;left:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(45,212,191,.12) 0%,transparent 65%)}
-.b2{top:250px;right:-80px;width:260px;height:260px;background:radial-gradient(circle,rgba(125,211,252,.09) 0%,transparent 65%)}
-.b3{bottom:150px;left:20%;width:220px;height:220px;background:radial-gradient(circle,rgba(196,181,253,.08) 0%,transparent 65%)}
+.b1{top:-120px;left:-100px;width:340px;height:340px;background:radial-gradient(circle,rgba(110,231,183,.1) 0%,transparent 65%)}
+.b2{top:300px;right:-100px;width:280px;height:280px;background:radial-gradient(circle,rgba(147,197,253,.08) 0%,transparent 65%)}
+.b3{bottom:160px;left:15%;width:240px;height:240px;background:radial-gradient(circle,rgba(196,181,253,.07) 0%,transparent 65%)}
+
+/* ── TOAST NOTIFICATION ── */
+#toast{position:fixed;top:calc(env(safe-area-inset-top) + 16px);left:50%;transform:translateX(-50%) translateY(-80px);z-index:9999;background:#1c2433;border:1px solid rgba(110,231,183,.3);border-radius:16px;padding:12px 20px;font-size:13px;font-weight:600;color:var(--mint);display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast .t-icon{font-size:18px}
 
 .wrap{position:relative;z-index:1;padding:0 14px}
 .hdr{padding:22px 16px 0;position:relative;z-index:1}
-.hdr h1{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--teal)}
+.hdr h1{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--mint)}
 .hdr p{font-size:11px;color:var(--slate2);margin-top:3px}
 
 /* cards */
 .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin-bottom:11px;backdrop-filter:blur(8px)}
-.card-teal{background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(125,211,252,.08))}
-.card-sage{background:linear-gradient(135deg,rgba(134,239,172,.08),rgba(45,212,191,.06))}
-.card-lavender{background:linear-gradient(135deg,rgba(196,181,253,.1),rgba(125,211,252,.06))}
+.card-mint{background:linear-gradient(135deg,rgba(110,231,183,.08),rgba(147,197,253,.06))}
+.card-lilac{background:linear-gradient(135deg,rgba(196,181,253,.09),rgba(147,197,253,.06))}
+.card-sand{background:linear-gradient(135deg,rgba(253,230,138,.07),rgba(110,231,183,.05))}
 
-.sec{font-size:12px;font-weight:700;color:var(--slate);letter-spacing:.5px;margin-bottom:11px;display:flex;align-items:center;gap:6px}
+.sec-title{font-size:12px;font-weight:700;color:var(--slate);letter-spacing:.5px;margin-bottom:10px}
 .lbl{font-size:10px;color:var(--slate2);font-weight:700;letter-spacing:.7px;margin-bottom:5px}
 
-/* inputs */
-.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;padding:10px 13px;color:#e6edf3;font-size:14px;margin-bottom:11px;transition:border .2s}
-.inp:focus{border-color:rgba(45,212,191,.4)}
-select.inp option{background:#161b22}
+.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;padding:10px 13px;color:#dde6f0;font-size:14px;margin-bottom:11px;transition:border .2s}
+.inp:focus{border-color:rgba(110,231,183,.35)}
+select.inp option{background:#151b24}
 
-/* pill selectors */
-.pill-grid{display:grid;gap:7px;margin-bottom:12px}
-.pg2{grid-template-columns:1fr 1fr}
-.pg3{grid-template-columns:1fr 1fr 1fr}
-.pg4{grid-template-columns:1fr 1fr 1fr 1fr}
-.pill-btn{border:1px solid var(--border);background:rgba(255,255,255,.04);border-radius:11px;padding:9px 6px;font-size:12px;font-weight:600;color:var(--slate);cursor:pointer;text-align:center;transition:all .15s;line-height:1.3}
-.pill-btn.sel{border-color:var(--teal);background:rgba(45,212,191,.15);color:var(--teal)}
+/* pill grids */
+.pg2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.pg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px}
+.pg4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:12px}
+.pill-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:11px;padding:9px 5px;font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;text-align:center;transition:all .15s;line-height:1.3}
+.pill-btn.sel{border-color:var(--mint2);background:rgba(52,211,153,.12);color:var(--mint)}
 .pill-btn .pi{font-size:18px;display:block;margin-bottom:3px}
 
 /* buttons */
-.btn{width:100%;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;color:#0d1117;transition:opacity .15s}
-.btn:active{opacity:.8}
-.btn-teal{background:linear-gradient(135deg,var(--teal),var(--sky2))}
-.btn-sage{background:linear-gradient(135deg,var(--sage2),var(--teal))}
-.btn-rose{background:linear-gradient(135deg,var(--rose2),var(--rose))}
-.btn-lavender{background:linear-gradient(135deg,var(--lavender2),var(--sky2))}
-.btn-amber{background:linear-gradient(135deg,var(--amber2),var(--amber))}
+.btn{width:100%;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.98);opacity:.85}
+.btn-mint{background:linear-gradient(135deg,var(--mint2),var(--sky2));color:#0e1117}
+.btn-sky{background:linear-gradient(135deg,var(--sky2),var(--lilac2));color:#0e1117}
+.btn-lilac{background:linear-gradient(135deg,var(--lilac2),var(--sky2));color:#0e1117}
+.btn-peach{background:linear-gradient(135deg,var(--peach2),var(--peach));color:#0e1117}
+.btn-sand{background:linear-gradient(135deg,var(--sand2),var(--sand));color:#0e1117}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--slate)}
 
-/* type toggle */
-.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}
-.type-btn{padding:10px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--border);color:var(--slate);background:rgba(255,255,255,.04)}
-.type-btn.ai{border-color:var(--sage2);background:rgba(74,222,128,.15);color:var(--sage2)}
-.type-btn.ae{border-color:var(--rose2);background:rgba(251,113,133,.15);color:var(--rose2)}
-
-/* stat cards */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
-.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px}
-.stat-val{font-size:21px;font-weight:800;margin-top:3px}
-.c-teal{color:var(--teal)}
-.c-sage{color:var(--sage2)}
-.c-sky{color:var(--sky2)}
-.c-lavender{color:var(--lavender2)}
-.c-rose{color:var(--rose2)}
-.c-amber{color:var(--amber2)}
-.c-slate{color:var(--slate)}
+/* nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(14,17,23,.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0;padding-bottom:max(14px,env(safe-area-inset-bottom));z-index:100}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.3;transition:opacity .2s;min-width:52px}
+.nav-btn.active{opacity:1}
+.nav-icon{font-size:21px}
+.nav-lbl{font-size:10px;color:var(--slate2);font-weight:600}
+.nav-btn.active .nav-lbl{color:var(--mint)}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--mint2)}
 
 /* history */
 .hist{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -95,53 +89,54 @@ select.inp option{background:#161b22}
 .hist-sub{font-size:11px;color:var(--slate2);margin-top:1px}
 .tag{display:inline-block;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;white-space:nowrap}
 
-/* progress bar */
-.bar-wrap{background:rgba(255,255,255,.06);border-radius:6px;height:6px;margin-top:5px}
-.bar-fill{height:6px;border-radius:6px;transition:width .4s}
-
-/* calorie calculator */
-.cal-calc{background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.18);border-radius:16px;padding:14px;margin-bottom:11px}
-.cal-calc h4{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.6px;margin-bottom:11px}
-.cal-result-box{background:var(--bg2);border-radius:12px;padding:12px;margin-top:10px;display:none}
+.sec-title{font-size:12px;font-weight:700;color:var(--slate);letter-spacing:.4px;margin-bottom:9px;padding-left:1px}
+.empty{color:var(--slate2);font-size:13px;text-align:center;padding:32px 0}
+.saran-box{font-size:13px;line-height:1.85;white-space:pre-wrap}
 .macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
 .macro-box{background:rgba(255,255,255,.04);border-radius:9px;padding:7px;text-align:center}
 .macro-val{font-size:15px;font-weight:800}
 .macro-lbl{font-size:9px;color:var(--slate2);margin-top:1px}
 
-/* gym details */
-.gym-detail{background:rgba(196,181,253,.07);border:1px solid rgba(196,181,253,.18);border-radius:16px;padding:14px;margin-bottom:11px}
-.gym-detail h4{font-size:11px;font-weight:700;color:var(--lavender2);letter-spacing:.6px;margin-bottom:11px}
-.burn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.burn-box2{background:var(--bg2);border-radius:11px;padding:10px;text-align:center}
-.burn-val{font-size:20px;font-weight:800;color:var(--lavender2)}
+/* ── FINANCE SPECIFIC ── */
+.fin-hero{background:linear-gradient(145deg,#151b24,#1a2030);border:1px solid rgba(110,231,183,.12);border-radius:22px;padding:20px;margin-bottom:11px;position:relative;overflow:hidden}
+.fin-hero::before{content:"";position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(110,231,183,.12) 0%,transparent 70%);pointer-events:none}
+.fin-bal{font-size:34px;font-weight:800;letter-spacing:-1px;margin:6px 0 2px}
+.fin-row{display:flex;gap:0;margin-top:14px}
+.fin-stat{flex:1;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:14px}
+.fin-stat+.fin-stat{margin-left:8px}
+.fin-stat-lbl{font-size:10px;font-weight:700;letter-spacing:.6px;color:var(--slate2);margin-bottom:4px}
+.fin-stat-val{font-size:17px;font-weight:800}
 
-/* nav */
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,17,23,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0;padding-bottom:max(14px,env(safe-area-inset-bottom));z-index:100}
-.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.35;transition:opacity .2s;min-width:52px}
-.nav-btn.active{opacity:1}
-.nav-icon{font-size:21px}
-.nav-lbl{font-size:10px;color:var(--slate2);font-weight:600}
-.nav-btn.active .nav-lbl{color:var(--teal)}
-.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--teal)}
+/* input numpad feel */
+.amt-hero{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;text-align:center}
+.amt-big{font-size:38px;font-weight:800;letter-spacing:-1px;color:#dde6f0;min-height:50px;line-height:1}
+.amt-sub{font-size:12px;color:var(--slate2);margin-top:4px}
+.cat-pill{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:12px;padding:10px 8px;font-size:11px;font-weight:600;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s;color:var(--slate)}
+.cat-pill.sel{border-color:rgba(110,231,183,.4);background:rgba(52,211,153,.1);color:var(--mint)}
+.cat-pill .ce{font-size:20px}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:13px}
 
-.sec-title{font-size:12px;font-weight:700;color:var(--slate);margin-bottom:9px;padding-left:2px;letter-spacing:.4px}
-.empty{color:var(--slate2);font-size:13px;text-align:center;padding:32px 0}
-.saran-box{font-size:13px;line-height:1.85;white-space:pre-wrap}
-.api-note{font-size:11px;color:var(--slate2);margin-top:8px;line-height:1.6}
-.api-note a{color:var(--teal)}
-.divider{border:none;border-top:1px solid var(--border);margin:11px 0}
+/* progress rings */
+.ring-wrap{display:flex;align-items:center;justify-content:center;position:relative}
+.ring-label{position:absolute;text-align:center}
 
-/* amt preview */
-.amt-preview{font-size:26px;font-weight:800;color:var(--teal);letter-spacing:-.5px;margin-bottom:8px;min-height:36px}
+/* Spending breakdown horizontal bars */
+.spend-bar{margin-bottom:10px}
+.spend-bar-lbl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.spend-track{background:rgba(255,255,255,.05);border-radius:6px;height:7px;overflow:hidden}
+.spend-fill{height:7px;border-radius:6px;transition:width .6s cubic-bezier(.34,1.2,.64,1)}
+
+/* trend chip */
+.trend-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.trend-up{background:rgba(110,231,183,.12);color:var(--mint)}
+.trend-dn{background:rgba(248,113,113,.12);color:var(--peach2)}
 </style>
 </head>
 <body>
+<div id="toast"><span class="t-icon">✅</span><span id="toast-msg">Berhasil disimpan</span></div>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 
-<div class="hdr">
-  <h1>Personal Tracker ✦</h1>
-  <p id="dateLabel"></p>
-</div>
+<div class="hdr"><h1>Personal Tracker ✦</h1><p id="dateLabel"></p></div>
 
 <div class="wrap" id="page-Dashboard" style="display:block"></div>
 <div class="wrap" id="page-Keuangan" style="display:none"></div>
@@ -158,116 +153,136 @@ select.inp option{background:#161b22}
 </nav>
 
 <script>
-// ══════════════════════════════════════════════════
-// DATA CONSTANTS
-// ══════════════════════════════════════════════════
-const EXPENSE_CATS=["Makan","Transportasi","Hiburan","Belanja","Kesehatan","Langganan","Lainnya"];
-const INCOME_CATS=["Gaji","Freelance","Investasi","Bonus","Lainnya"];
+// ══ TOAST ══════════════════════════════════
+let toastTimer;
+function showToast(msg,icon="✅"){
+  const t=document.getElementById("toast");
+  document.getElementById("toast-msg").textContent=msg;
+  t.querySelector(".t-icon").textContent=icon;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+// ══ CONSTANTS ══════════════════════════════
+const EXPENSE_CATS=[
+  {n:"Makan",e:"🍜"},      {n:"Transportasi",e:"🚗"},{n:"Hiburan",e:"🎮"},
+  {n:"Belanja",e:"🛍️"},   {n:"Kesehatan",e:"💊"},   {n:"Langganan",e:"📱"},
+  {n:"Pendidikan",e:"📚"}, {n:"Lainnya",e:"💳"}
+];
+const INCOME_CATS=[
+  {n:"Gaji",e:"💼"},{n:"Freelance",e:"💻"},{n:"Investasi",e:"📈"},
+  {n:"Bonus",e:"🎁"},{n:"Lainnya",e:"💰"}
+];
+const CAT_COLOR={Makan:"#6ee7b7",Transportasi:"#93c5fd",Hiburan:"#c4b5fd",Belanja:"#fca5a5",Kesehatan:"#86efac",Langganan:"#fde68a",Pendidikan:"#7dd3fc",Lainnya:"#94a3b8",Gaji:"#6ee7b7",Freelance:"#93c5fd",Investasi:"#fde68a",Bonus:"#c4b5fd"};
 const MEAL_TIMES=["Sarapan","Makan Siang","Makan Malam","Snack"];
-
-// Food DB: [kkal/100g, protein, karbo, lemak, unit_label, satuan_default, src]
-const FOOD_DB={
-  // ── PROTEIN HEWANI
-  "Dada Ayam":      [165,31,0,3.6,"per 100g","gram","USDA #331960"],
-  "Paha Ayam":      [209,26,0,11,"per 100g","gram","USDA FoodData Central"],
-  "Ayam Goreng":    [260,28,8,13,"per 100g","gram","USDA / estimasi"],
-  "Telur Ayam":     [143,13,1,10,"per butir ≈50g",  "butir","USDA #748967"],
-  "Putih Telur":    [52,11,0.7,0.2,"per 100g","gram","USDA FoodData Central"],
-  "Daging Sapi":    [250,26,0,17,"per 100g","gram","USDA #174032"],
-  "Daging Kambing": [258,27,0,17,"per 100g","gram","USDA FoodData Central"],
-  "Ikan Salmon":    [208,20,0,13,"per 100g","gram","USDA #175167"],
-  "Ikan Tuna":      [144,30,0,2,"per 100g","gram","USDA #175159"],
-  "Ikan Lele":      [116,18,0,4,"per 100g","gram","DKBM Kemenkes RI"],
-  "Udang":          [99,24,0,0.3,"per 100g","gram","USDA #175178"],
-  "Cumi":           [92,16,3,1.4,"per 100g","gram","USDA FoodData Central"],
-  // ── KARBO
-  "Nasi Putih":     [130,2.7,28,0.3,"per 100g (≈1 centong)","gram","DKBM Kemenkes / USDA #168880"],
-  "Nasi Merah":     [111,2.6,23,0.9,"per 100g","gram","USDA #168878"],
-  "Roti Tawar":     [265,9,49,3.2,"per 100g (≈2 lembar)","gram","USDA #325871"],
-  "Mie Instan":     [350,8,50,13,"per 100g (1 bungkus)","gram","Indomie label"],
-  "Oatmeal":        [389,17,66,7,"per 100g (kering)","gram","USDA #173904"],
-  "Kentang":        [77,2,17,0.1,"per 100g","gram","USDA #170026"],
-  "Kentang Goreng": [312,3.4,41,15,"per 100g","gram","USDA FoodData Central"],
-  "Jagung":         [86,3.2,19,1.2,"per 100g","gram","USDA #170416"],
-  // ── PROTEIN NABATI
-  "Tahu":           [76,8,1.9,4.8,"per 100g","gram","USDA #174291"],
-  "Tempe":          [193,19,10,11,"per 100g","gram","DKBM / USDA #174272"],
-  "Kacang Tanah":   [567,26,16,49,"per 100g","gram","USDA #172430"],
-  "Kacang Almond":  [579,21,22,50,"per 100g","gram","USDA #170567"],
-  // ── SAYURAN
-  "Bayam":          [23,2.9,3.6,0.4,"per 100g","gram","USDA #168462"],
-  "Brokoli":        [34,2.8,7,0.4,"per 100g","gram","USDA #170379"],
-  "Wortel":         [41,0.9,10,0.2,"per 100g","gram","USDA #170393"],
-  "Kangkung":       [19,2.6,2.7,0.3,"per 100g","gram","DKBM Kemenkes RI"],
-  "Timun":          [15,0.7,3.6,0.1,"per 100g","gram","USDA #168409"],
-  // ── BUAH
-  "Pisang":         [89,1.1,23,0.3,"per buah ≈100g","buah","USDA #173944"],
-  "Apel":           [52,0.3,14,0.2,"per buah ≈182g","buah","USDA #171688"],
-  "Mangga":         [60,0.8,15,0.4,"per 100g","gram","USDA #169910"],
-  "Alpukat":        [160,2,9,15,"per 100g (½ buah)","gram","USDA #171705"],
-  "Semangka":       [30,0.6,7.6,0.2,"per 100g","gram","USDA #167765"],
-  "Jeruk":          [47,0.9,12,0.1,"per buah ≈130g","buah","USDA #169097"],
-  // ── MAKANAN INDONESIA
-  "Nasi Goreng":    [250,8,35,10,"per 100g (1 porsi ≈300g)","gram","DKBM Kemenkes RI"],
-  "Gado-gado":      [135,6,12,8,"per 100g","gram","DKBM Kemenkes RI"],
-  "Soto Ayam":      [95,8,6,4,"per 100g","gram","DKBM Kemenkes RI"],
-  "Rendang":        [285,23,5,20,"per 100g","gram","DKBM Kemenkes RI"],
-  "Bubur Ayam":     [80,4,12,2,"per 100g (1 porsi ≈350g)","gram","DKBM Kemenkes RI"],
-  "Bakso":          [180,10,18,7,"per 100g","gram","DKBM Kemenkes RI"],
-  "Mie Goreng":     [490,10,63,22,"per 100g","gram","Estimasi USDA"],
-  // ── MINUMAN & DAIRY
-  "Susu Full Cream":[61,3.2,4.8,3.3,"per 100ml","ml","USDA #336070"],
-  "Susu Skim":      [35,3.4,5,0.2,"per 100ml","ml","USDA FoodData Central"],
-  "Yogurt Plain":   [59,3.5,4.7,3.3,"per 100g","gram","USDA #170903"],
-  "Kopi Hitam":     [2,0.3,0,0,"per 100ml","ml","USDA #171891"],
-  "Jus Jeruk":      [45,0.7,10,0.2,"per 100ml","ml","USDA #169098"],
-};
-
-// Per-butir/unit calorie adjustments
-const FOOD_UNIT_G={"Telur Ayam":50,"Pisang":100,"Apel":182,"Jeruk":130};
-
-// Gym data: [kkal_low/mnt, kkal_high/mnt, MET, description, rest_suggestion, tips]
+const MEAL_EMOJI={Sarapan:"🌅","Makan Siang":"☀️","Makan Malam":"🌙",Snack:"🍪"};
 const GYM_DATA={
   "Chest":    {low:5,high:8,met:4.0,icon:"🫁",desc:"Bench Press, Push-Up, Cable Fly, Dips",rest:"48–72 jam",reps:"3–4 set × 8–12 rep",tip:"Fokus squeeze di puncak gerakan"},
   "Back":     {low:5,high:8,met:4.0,icon:"🔙",desc:"Pull-Up, Row, Lat Pulldown, Deadlift",rest:"48–72 jam",reps:"3–4 set × 8–12 rep",tip:"Tarik ke dada, bukan tangan"},
   "Legs":     {low:6,high:10,met:5.0,icon:"🦵",desc:"Squat, Leg Press, Lunges, Leg Curl",rest:"72 jam",reps:"4 set × 8–15 rep",tip:"Turun hingga paha sejajar lantai"},
-  "Shoulders":{low:4,high:7,met:3.5,icon:"💪",desc:"OHP, Lateral Raise, Face Pull, Arnold Press",rest:"48 jam",reps:"3–4 set × 10–15 rep",tip:"Jaga core tetap kencang saat OHP"},
-  "Arms":     {low:3,high:6,met:3.0,icon:"🤜",desc:"Bicep Curl, Tricep Dip, Hammer Curl, Skull Crusher",rest:"48 jam",reps:"3 set × 12–15 rep",tip:"Kontrol fase eksentrik (turun pelan)"},
-  "Cardio":   {low:8,high:14,met:7.0,icon:"🏃",desc:"Lari, Cycling, HIIT, Jump Rope, Rowing",rest:"24 jam",reps:"20–60 menit zone 2",tip:"Zone 2: bisa ngobrol tapi napas agak berat"},
-  "Core":     {low:3,high:6,met:3.5,icon:"🎯",desc:"Plank, Crunch, Leg Raise, Russian Twist",rest:"24–48 jam",reps:"3 set × 15–20 rep / 30–60 dtk plank",tip:"Napas stabil selama plank"},
-  "Full Body":{low:6,high:11,met:5.5,icon:"⚡",desc:"CrossFit, Circuit Training, Functional",rest:"48 jam",reps:"3–5 round circuit",tip:"Istirahat antar exercise 30–45 dtk"},
-  "Stretching":{low:2,high:4,met:2.5,icon:"🧘",desc:"Yoga, Static Stretch, Foam Rolling, Mobility",rest:"Bisa tiap hari",reps:"15–30 menit",tip:"Tahan setiap posisi 20–30 detik"},
+  "Shoulders":{low:4,high:7,met:3.5,icon:"💪",desc:"OHP, Lateral Raise, Face Pull, Arnold Press",rest:"48 jam",reps:"3–4 set × 10–15 rep",tip:"Jaga core kencang saat OHP"},
+  "Arms":     {low:3,high:6,met:3.0,icon:"🤜",desc:"Bicep Curl, Tricep Dip, Hammer Curl",rest:"48 jam",reps:"3 set × 12–15 rep",tip:"Kontrol fase eksentrik (turun pelan)"},
+  "Cardio":   {low:8,high:14,met:7.0,icon:"🏃",desc:"Lari, Cycling, HIIT, Jump Rope",rest:"24 jam",reps:"20–60 menit zone 2",tip:"Zone 2: napas berat tapi bisa ngobrol"},
+  "Core":     {low:3,high:6,met:3.5,icon:"🎯",desc:"Plank, Crunch, Leg Raise, Russian Twist",rest:"24–48 jam",reps:"3 set × 15–20 rep",tip:"Napas stabil saat plank"},
+  "Full Body":{low:6,high:11,met:5.5,icon:"⚡",desc:"CrossFit, Circuit Training, Functional",rest:"48 jam",reps:"3–5 round circuit",tip:"Istirahat 30–45 dtk antar exercise"},
+  "Stretching":{low:2,high:4,met:2.5,icon:"🧘",desc:"Yoga, Static Stretch, Foam Rolling",rest:"Tiap hari boleh",reps:"15–30 menit",tip:"Tahan setiap posisi 20–30 detik"},
 };
-
 const GYM_INTENSITY=["Ringan","Sedang","Berat","Sangat Berat"];
 const GYM_INTENSITY_MULT=[0.75,1.0,1.25,1.5];
 const MOOD_OPTS=["💪 Semangat","😊 Normal","😐 Malas","😴 Capek"];
 
-const CAT_COLOR={Makan:"#2dd4bf",Transportasi:"#7dd3fc",Hiburan:"#c4b5fd",Belanja:"#fda4af",Kesehatan:"#86efac",Langganan:"#fcd34d",Lainnya:"#94a3b8",Gaji:"#86efac",Freelance:"#7dd3fc",Investasi:"#fcd34d",Bonus:"#c4b5fd"};
-const MEAL_EMOJI={Sarapan:"🌅","Makan Siang":"☀️","Makan Malam":"🌙",Snack:"🍪"};
+// ══ FOOD DB ════════════════════════════════
+// [kkal/100g, protein/100g, karbo/100g, lemak/100g, unit_label, unit_type, source, protein_quality]
+// protein_quality: "complete" | "partial" | "plant"
+const FOOD_DB={
+  // ── Protein Hewani (USDA FoodData Central)
+  "Dada Ayam":      [165,31.0,0,3.6,"per 100g","gram","USDA #331960","complete"],
+  "Paha Ayam":      [209,26.0,0,11.0,"per 100g","gram","USDA FoodData Central","complete"],
+  "Ayam Goreng":    [260,28.0,8,13.0,"per 100g","gram","USDA / DKBM estimasi","complete"],
+  "Telur Ayam":     [78,6.3,0.6,5.3,"per butir (50g)","butir","USDA #748967 (per butir 50g)","complete"],
+  "Putih Telur":    [52,10.9,0.7,0.2,"per 100g","gram","USDA #172183","complete"],
+  "Daging Sapi":    [250,26.1,0,17.0,"per 100g","gram","USDA #174032","complete"],
+  "Daging Kambing": [258,27.1,0,17.0,"per 100g","gram","USDA #174362","complete"],
+  "Ikan Salmon":    [208,20.4,0,13.4,"per 100g","gram","USDA #175167","complete"],
+  "Ikan Tuna":      [144,29.9,0,2.5,"per 100g","gram","USDA #175159","complete"],
+  "Ikan Lele":      [116,18.0,0,4.0,"per 100g","gram","DKBM Kemenkes RI 2018","complete"],
+  "Udang":          [99,23.8,0.9,0.3,"per 100g","gram","USDA #175178","complete"],
+  "Cumi":           [92,15.6,3.1,1.4,"per 100g","gram","USDA #175177","complete"],
+  // ── Karbo (USDA / DKBM)
+  "Nasi Putih":     [130,2.7,28.2,0.3,"per 100g","gram","DKBM Kemenkes / USDA #168880","partial"],
+  "Nasi Merah":     [111,2.6,23.1,0.9,"per 100g","gram","USDA #168878","partial"],
+  "Roti Tawar":     [265,8.9,49.1,3.2,"per 100g","gram","USDA #325871","partial"],
+  "Mie Instan":     [350,8.1,50.3,13.0,"per 100g","gram","Indomie nutrition label","partial"],
+  "Oatmeal":        [389,16.9,66.3,7.0,"per 100g kering","gram","USDA #173904","partial"],
+  "Kentang":        [77,2.0,17.5,0.1,"per 100g","gram","USDA #170026","partial"],
+  "Kentang Goreng": [312,3.4,41.4,15.0,"per 100g","gram","USDA FoodData Central","partial"],
+  "Jagung":         [86,3.2,18.7,1.2,"per 100g","gram","USDA #170416","partial"],
+  // ── Protein Nabati
+  "Tahu":           [76,8.1,1.9,4.8,"per 100g","gram","USDA #174291","plant"],
+  "Tempe":          [193,18.5,9.9,10.8,"per 100g","gram","DKBM / USDA #174272","plant"],
+  "Kacang Tanah":   [567,25.8,16.1,49.2,"per 100g","gram","USDA #172430","plant"],
+  "Kacang Almond":  [579,21.2,21.7,49.9,"per 100g","gram","USDA #170567","plant"],
+  "Edamame":        [122,10.9,8.9,5.2,"per 100g","gram","USDA #168411","plant"],
+  "Greek Yogurt":   [59,10.2,3.6,0.4,"per 100g","gram","USDA #170903","complete"],
+  "Cottage Cheese": [98,11.1,3.4,4.3,"per 100g","gram","USDA #173417","complete"],
+  // ── Sayuran
+  "Bayam":          [23,2.9,3.6,0.4,"per 100g","gram","USDA #168462","plant"],
+  "Brokoli":        [34,2.8,6.6,0.4,"per 100g","gram","USDA #170379","plant"],
+  "Wortel":         [41,0.9,9.6,0.2,"per 100g","gram","USDA #170393","plant"],
+  "Kangkung":       [19,2.6,2.7,0.3,"per 100g","gram","DKBM Kemenkes RI 2018","plant"],
+  "Timun":          [15,0.7,3.6,0.1,"per 100g","gram","USDA #168409","plant"],
+  // ── Buah
+  "Pisang":         [89,1.1,22.8,0.3,"per buah (~100g)","buah","USDA #173944","plant"],
+  "Apel":           [52,0.3,13.8,0.2,"per buah (~182g)","buah","USDA #171688","plant"],
+  "Mangga":         [60,0.8,15.0,0.4,"per 100g","gram","USDA #169910","plant"],
+  "Alpukat":        [160,2.0,8.5,14.7,"per 100g","gram","USDA #171705","plant"],
+  "Semangka":       [30,0.6,7.6,0.2,"per 100g","gram","USDA #167765","plant"],
+  "Jeruk":          [47,0.9,11.8,0.1,"per buah (~130g)","buah","USDA #169097","plant"],
+  // ── Masakan Indonesia (DKBM Kemenkes RI 2018)
+  "Nasi Goreng":    [250,8.0,35.0,10.0,"per 100g (1 porsi≈300g)","gram","DKBM Kemenkes RI 2018","partial"],
+  "Gado-gado":      [135,6.0,12.0,8.0,"per 100g","gram","DKBM Kemenkes RI 2018","plant"],
+  "Soto Ayam":      [95,8.0,6.0,4.0,"per 100g","gram","DKBM Kemenkes RI 2018","complete"],
+  "Rendang":        [285,23.0,5.0,20.0,"per 100g","gram","DKBM Kemenkes RI 2018","complete"],
+  "Bubur Ayam":     [80,4.0,12.0,2.0,"per 100g (1 porsi≈350g)","gram","DKBM Kemenkes RI 2018","complete"],
+  "Bakso":          [180,10.0,18.0,7.0,"per 100g","gram","DKBM Kemenkes RI 2018","complete"],
+  "Mie Goreng":     [490,10.0,63.0,22.0,"per 100g","gram","DKBM / USDA estimasi","partial"],
+  // ── Minuman & Dairy
+  "Susu Full Cream":[61,3.2,4.8,3.3,"per 100ml","ml","USDA #336070","complete"],
+  "Susu Skim":      [35,3.4,5.0,0.2,"per 100ml","ml","USDA FoodData Central","complete"],
+  "Whey Protein":   [120,24.0,3.0,1.5,"per scoop (~30g)","scoop","USDA / brand avg","complete"],
+  "Kopi Hitam":     [2,0.3,0,0,"per 100ml","ml","USDA #171891","partial"],
+  "Jus Jeruk":      [45,0.7,10.4,0.2,"per 100ml","ml","USDA #169098","plant"],
+};
+const FOOD_UNIT_G={"Telur Ayam":50,"Pisang":100,"Apel":182,"Jeruk":130,"Whey Protein":30};
+const FOOD_GROUPS={
+  "🍗 Protein Hewani":["Dada Ayam","Paha Ayam","Ayam Goreng","Telur Ayam","Putih Telur","Daging Sapi","Daging Kambing","Ikan Salmon","Ikan Tuna","Ikan Lele","Udang","Cumi"],
+  "🌾 Karbo":["Nasi Putih","Nasi Merah","Roti Tawar","Mie Instan","Oatmeal","Kentang","Kentang Goreng","Jagung"],
+  "🌱 Protein Nabati":["Tahu","Tempe","Kacang Tanah","Kacang Almond","Edamame","Greek Yogurt","Cottage Cheese"],
+  "🥦 Sayuran":["Bayam","Brokoli","Wortel","Kangkung","Timun"],
+  "🍌 Buah":["Pisang","Apel","Mangga","Alpukat","Semangka","Jeruk"],
+  "🍽️ Masakan Indonesia":["Nasi Goreng","Gado-gado","Soto Ayam","Rendang","Bubur Ayam","Bakso","Mie Goreng"],
+  "🥛 Minuman & Susu":["Susu Full Cream","Susu Skim","Whey Protein","Kopi Hitam","Jus Jeruk"],
+};
+const PROTEIN_DAILY_GOAL=50; // gram, WHO recommendation
 
-let finance=JSON.parse(localStorage.getItem("pt_f3")||"[]");
-let gym=JSON.parse(localStorage.getItem("pt_g3")||"[]");
-let meals=JSON.parse(localStorage.getItem("pt_m3")||"[]");
-const save=()=>{localStorage.setItem("pt_f3",JSON.stringify(finance));localStorage.setItem("pt_g3",JSON.stringify(gym));localStorage.setItem("pt_m3",JSON.stringify(meals))};
+// ══ STORAGE ════════════════════════════════
+let finance=JSON.parse(localStorage.getItem("pt_f4")||"[]");
+let gym=JSON.parse(localStorage.getItem("pt_g4")||"[]");
+let meals=JSON.parse(localStorage.getItem("pt_m4")||"[]");
+const save=()=>{localStorage.setItem("pt_f4",JSON.stringify(finance));localStorage.setItem("pt_g4",JSON.stringify(gym));localStorage.setItem("pt_m4",JSON.stringify(meals))};
 const today=()=>new Date().toISOString().split("T")[0];
 const fmtD=d=>new Date(d).toLocaleDateString("id-ID",{day:"numeric",month:"short"});
 const fmtIDR=n=>"Rp "+Math.round(n).toLocaleString("id-ID");
 
 document.getElementById("dateLabel").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 
-// ══════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════
-let fType="Pengeluaran",fAmt=0;
+// ══ STATE ══════════════════════════════════
+let fType="Pengeluaran",fAmt=0,fSelCat="";
 let gType="Chest",gIntensity=1,gMood=0,gDur=45;
-let mTime="Sarapan";
-let mealItems=[];  // [{name,gram,cal,p,c,f}]
-let selFood="",selUnit="gram";
+let mTime="Sarapan",mealItems=[],selFood="";
 
-// ══════════════════════════════════════════════════
-// STATS
-// ══════════════════════════════════════════════════
+// ══ STATS ══════════════════════════════════
 function stats(){
   const now=new Date(),d30=new Date(now-30*864e5).toISOString().split("T")[0],d7=new Date(now-7*864e5).toISOString().split("T")[0];
   const fin30=finance.filter(f=>f.date>=d30);
@@ -278,8 +293,13 @@ function stats(){
   const meals7=meals.filter(m=>m.date>=d7);
   const dc=Math.max(1,[...new Set(meals7.map(m=>m.date))].length);
   const avgCal=Math.round(meals7.reduce((s,m)=>s+m.totalCal,0)/dc);
+  const avgProt=Math.round(meals7.reduce((s,m)=>s+(m.totalProt||0),0)/dc);
   const topCat=Object.entries(expByCat).sort((a,b)=>b[1]-a[1])[0]?.[0];
-  const totalBurned=gym.filter(g=>g.date>=d30).reduce((s,g)=>s+(g.burned||0),0);
+  const totalBurned=gym30.reduce((s,g)=>s+(g.burned||0),0);
+  // prev 30 day expense for trend
+  const d60=new Date(now-60*864e5).toISOString().split("T")[0];
+  const prevExp=finance.filter(f=>f.date>=d60&&f.date<d30&&f.type==="Pengeluaran").reduce((s,f)=>s+f.amount,0);
+  const expTrend=prevExp>0?Math.round((exp-prevExp)/prevExp*100):0;
   const days7=Array.from({length:7},(_,i)=>{
     const d=new Date(now-(6-i)*864e5).toISOString().split("T")[0];
     return{d,label:fmtD(d).split(" ")[0],
@@ -287,85 +307,68 @@ function stats(){
       income:finance.filter(f=>f.date===d&&f.type==="Pemasukan").reduce((s,f)=>s+f.amount,0),
       gymMin:gym.filter(g=>g.date===d).reduce((s,g)=>s+g.duration,0),
       cal:meals.filter(m=>m.date===d).reduce((s,m)=>s+m.totalCal,0),
+      prot:meals.filter(m=>m.date===d).reduce((s,m)=>s+(m.totalProt||0),0),
     };
   });
-  return{inc,exp,bal:inc-exp,expByCat,gym30,avgCal,topCat,totalBurned,days7,lastGym:gym[0]?.date?fmtD(gym[0].date):null};
+  return{inc,exp,bal:inc-exp,expByCat,gym30,avgCal,avgProt,topCat,totalBurned,days7,lastGym:gym[0]?.date?fmtD(gym[0].date):null,expTrend};
 }
 
-// ══════════════════════════════════════════════════
-// CHART — smooth bezier, calming colors
-// ══════════════════════════════════════════════════
-function drawLine(id,data,color,fillColor){
+// ══ CHART ══════════════════════════════════
+function drawLine(id,data,color){
   const c=document.getElementById(id);if(!c)return;
-  const ctx=c.getContext("2d");
-  // Use actual rendered size
-  const W=c.offsetWidth||c.width,H=c.offsetHeight||c.height;
+  const W=c.offsetWidth||320,H=c.offsetHeight||90;
   c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
   ctx.clearRect(0,0,W,H);
-  const vals=data.map(d=>d.v),max=Math.max(...vals,1),pad={t:10,b:22,l:8,r:8};
+  const vals=data.map(d=>d.v),max=Math.max(...vals,1);
+  const pad={t:8,b:20,l:6,r:6};
   const iW=W-pad.l-pad.r,iH=H-pad.t-pad.b;
   if(data.length<2)return;
-
-  // grid lines
+  // grid
   [0,.5,1].forEach(p=>{
     const y=pad.t+iH*(1-p);
     ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);
-    ctx.strokeStyle="rgba(255,255,255,.04)";ctx.lineWidth=1;ctx.setLineDash([4,6]);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle="rgba(255,255,255,.035)";ctx.lineWidth=1;ctx.setLineDash([3,7]);ctx.stroke();ctx.setLineDash([]);
   });
-
-  const pts=data.map((d,i)=>({
-    x:pad.l+i/(data.length-1)*iW,
-    y:pad.t+iH*(1-d.v/max),v:d.v,label:d.label
-  }));
-
-  // area gradient
-  const grad=ctx.createLinearGradient(0,pad.t,0,H-pad.b);
-  grad.addColorStop(0,(fillColor||color)+"40");
-  grad.addColorStop(1,(fillColor||color)+"00");
+  const pts=data.map((d,i)=>({x:pad.l+i/(data.length-1)*iW,y:pad.t+iH*(1-d.v/max),v:d.v,label:d.label}));
+  // area
+  const g2=ctx.createLinearGradient(0,pad.t,0,H);
+  g2.addColorStop(0,color+"38");g2.addColorStop(1,color+"00");
   ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
   for(let i=1;i<pts.length;i++){const mx=(pts[i-1].x+pts[i].x)/2;ctx.bezierCurveTo(mx,pts[i-1].y,mx,pts[i].y,pts[i].x,pts[i].y)}
-  ctx.lineTo(pts[pts.length-1].x,H-pad.b);ctx.lineTo(pts[0].x,H-pad.b);ctx.closePath();
-  ctx.fillStyle=grad;ctx.fill();
-
-  // line
+  ctx.lineTo(pts[pts.length-1].x,H-pad.b);ctx.lineTo(pts[0].x,H-pad.b);ctx.closePath();ctx.fillStyle=g2;ctx.fill();
+  // glow line
   ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
   for(let i=1;i<pts.length;i++){const mx=(pts[i-1].x+pts[i].x)/2;ctx.bezierCurveTo(mx,pts[i-1].y,mx,pts[i].y,pts[i].x,pts[i].y)}
-  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin="round";ctx.stroke();
-
-  // glow
+  ctx.strokeStyle=color+"50";ctx.lineWidth=6;ctx.stroke();
+  // main line
   ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
   for(let i=1;i<pts.length;i++){const mx=(pts[i-1].x+pts[i].x)/2;ctx.bezierCurveTo(mx,pts[i-1].y,mx,pts[i].y,pts[i].x,pts[i].y)}
-  ctx.strokeStyle=color+"55";ctx.lineWidth=5;ctx.stroke();
-
-  // dots + labels
-  pts.forEach((p,i)=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
-    ctx.fillStyle="#0d1117";ctx.fill();
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  // dots
+  pts.forEach(p=>{
+    ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle="#0e1117";ctx.fill();
     ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
-    if(p.label){ctx.fillStyle="#64748b";ctx.font="9px -apple-system";ctx.textAlign="center";ctx.fillText(p.label,p.x,H-4)}
+    if(p.label){ctx.fillStyle="#55667a";ctx.font="9px -apple-system";ctx.textAlign="center";ctx.fillText(p.label,p.x,H-3)}
   });
 }
-
 function drawDonut(id,data){
   const c=document.getElementById(id);if(!c)return;
   const ctx=c.getContext("2d"),W=c.width,H=c.height,r=W*.36,cx=W/2,cy=H/2;
   ctx.clearRect(0,0,W,H);
-  const total=data.reduce((s,d)=>s+d.v,0)||1;
-  let start=-Math.PI/2;
-  // gap between slices
+  const total=data.reduce((s,d)=>s+d.v,0)||1;let start=-Math.PI/2;
   data.forEach(d=>{
-    const a=(d.v/total)*Math.PI*2*.95;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+a);ctx.closePath();
-    ctx.fillStyle=d.color;ctx.fill();start+=a+(Math.PI*2*.05/data.length);
+    const a=(d.v/total)*Math.PI*2*.94;
+    ctx.beginPath();ctx.arc(cx,cy,r,start,start+a);
+    ctx.strokeStyle=d.color;ctx.lineWidth=14;ctx.lineCap="round";ctx.stroke();
+    start+=a+.04;
   });
-  ctx.beginPath();ctx.arc(cx,cy,r*.62,0,Math.PI*2);ctx.fillStyle="#0d1117";ctx.fill();
-  ctx.fillStyle="#e6edf3";ctx.font="bold 13px -apple-system";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(data.length,cx,cy-6);
-  ctx.fillStyle="#64748b";ctx.font="8px -apple-system";ctx.fillText("kategori",cx,cy+8);
+  ctx.beginPath();ctx.arc(cx,cy,r*.58,0,Math.PI*2);ctx.fillStyle="#0e1117";ctx.fill();
+  ctx.fillStyle="#dde6f0";ctx.font="bold 13px -apple-system";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(data.length,cx,cy-6);
+  ctx.fillStyle="#55667a";ctx.font="8px -apple-system";ctx.fillText("kat.",cx,cy+8);
 }
 
-// ══════════════════════════════════════════════════
-// TAB SWITCH
-// ══════════════════════════════════════════════════
+// ══ TAB SWITCH ═════════════════════════════
 const TABS=["Dashboard","Keuangan","Gym","Makan","Saran"];
 let curTab="Dashboard";
 function switchTab(t){
@@ -380,205 +383,203 @@ function switchTab(t){
 }
 function render(t){const s=stats();if(t==="Dashboard")rDash(s);else if(t==="Keuangan")rKeu(s);else if(t==="Gym")rGym(s);else if(t==="Makan")rMakan(s);else if(t==="Saran")rSaran(s)}
 
-// ══════════════════════════════════════════════════
-// DASHBOARD
-// ══════════════════════════════════════════════════
+// ══ DASHBOARD ══════════════════════════════
 function rDash(s){
-  const balCol=s.bal>=0?"#86efac":"#fda4af";
+  const balCol=s.bal>=0?"#6ee7b7":"#fca5a5";
   let h=`<div style="height:14px"></div>
-  <div class="card card-teal">
+  <div class="fin-hero">
     <div class="lbl">SALDO BERSIH (30 HARI)</div>
-    <div style="font-size:30px;font-weight:800;color:${balCol};letter-spacing:-.5px;margin:4px 0">${fmtIDR(s.bal)}</div>
-    <div style="display:flex;gap:18px;margin-top:3px">
-      <span style="font-size:12px;color:#86efac">▲ ${fmtIDR(s.inc)}</span>
-      <span style="font-size:12px;color:#fda4af">▼ ${fmtIDR(s.exp)}</span>
+    <div class="fin-bal" style="color:${balCol}">${fmtIDR(s.bal)}</div>
+    <div class="fin-row">
+      <div class="fin-stat"><div class="fin-stat-lbl">PEMASUKAN</div><div class="fin-stat-val" style="color:#6ee7b7">${fmtIDR(s.inc)}</div></div>
+      <div class="fin-stat"><div class="fin-stat-lbl">PENGELUARAN</div><div class="fin-stat-val" style="color:#fca5a5">${fmtIDR(s.exp)}</div></div>
     </div>
   </div>
   <div class="card">
-    <div class="sec-title">📈 Pengeluaran vs Pemasukan 7 Hari</div>
-    <canvas id="ch-spend" style="width:100%;height:100px;display:block"></canvas>
-    <div style="display:flex;gap:14px;margin-top:8px">
-      <span style="font-size:11px;color:#86efac">● Pemasukan</span>
-      <span style="font-size:11px;color:#fda4af">● Pengeluaran</span>
-    </div>
-    <canvas id="ch-income" style="width:100%;height:80px;display:block;margin-top:8px"></canvas>
+    <div class="sec-title">📈 Tren 7 Hari</div>
+    <div style="font-size:11px;color:#55667a;margin-bottom:6px">Pengeluaran</div>
+    <canvas id="ch-spend" style="width:100%;height:90px;display:block"></canvas>
+    <div style="font-size:11px;color:#55667a;margin:10px 0 6px">Pemasukan</div>
+    <canvas id="ch-income" style="width:100%;height:70px;display:block"></canvas>
   </div>`;
-
   const dd=Object.entries(s.expByCat).map(([k,v])=>({label:k,v,color:CAT_COLOR[k]||"#94a3b8"}));
   if(dd.length){
-    let leg=dd.sort((a,b)=>b.v-a.v).map(d=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <div style="display:flex;align-items:center;gap:7px"><div style="width:8px;height:8px;border-radius:50%;background:${d.color}"></div><span style="font-size:12px">${d.label}</span></div>
-      <span style="font-size:12px;color:#64748b">${Math.round(d.v/(s.exp||1)*100)}%</span>
-    </div>`).join("");
-    h+=`<div class="card"><div class="sec-title">🧩 Komposisi Pengeluaran</div>
-    <div style="display:flex;gap:14px;align-items:center">
-      <canvas id="ch-donut" width="110" height="110" style="flex-shrink:0"></canvas>
-      <div style="flex:1">${leg}</div>
-    </div></div>`;
+    const sorted=dd.sort((a,b)=>b.v-a.v);
+    const leg=sorted.map(d=>`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px"><div style="width:8px;height:8px;border-radius:50%;background:${d.color}"></div><span style="font-size:12px">${d.label}</span></div><span style="font-size:12px;color:#55667a">${Math.round(d.v/(s.exp||1)*100)}%</span></div>`).join("");
+    h+=`<div class="card"><div class="sec-title">🧩 Komposisi Pengeluaran</div><div style="display:flex;gap:14px;align-items:center"><canvas id="ch-donut" width="100" height="100" style="flex-shrink:0"></canvas><div style="flex:1">${leg}</div></div></div>`;
   }
-
-  h+=`<div class="stat-grid">
-    <div class="stat-box"><div class="lbl">GYM (30H)</div><div class="stat-val c-sky">${s.gym30.length}x</div><div style="font-size:11px;color:#64748b;margin-top:2px">terakhir: ${s.lastGym||"-"}</div></div>
-    <div class="stat-box"><div class="lbl">KALORI RATA</div><div class="stat-val c-amber">${s.avgCal||0}</div><div style="font-size:11px;color:#64748b;margin-top:2px">kkal / hari</div></div>
-    <div class="stat-box"><div class="lbl">KALORI TERBAKAR</div><div class="stat-val c-lavender">${s.totalBurned.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#64748b;margin-top:2px">kkal 30 hari</div></div>
-    <div class="stat-box"><div class="lbl">TOP SPEND</div><div style="font-size:14px;font-weight:700;color:var(--teal);margin-top:4px">${s.topCat||"-"}</div></div>
+  h+=`<div class="stat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="lbl">GYM (30H)</div><div style="font-size:21px;font-weight:800;color:#93c5fd;margin-top:3px">${s.gym30.length}x</div><div style="font-size:11px;color:#55667a;margin-top:2px">terakhir: ${s.lastGym||"-"}</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="lbl">KALORI RATA</div><div style="font-size:21px;font-weight:800;color:#fde68a;margin-top:3px">${s.avgCal||0}</div><div style="font-size:11px;color:#55667a;margin-top:2px">kkal / hari</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="lbl">PROTEIN RATA</div><div style="font-size:21px;font-weight:800;color:#6ee7b7;margin-top:3px">${s.avgProt||0}g</div><div style="font-size:11px;color:#55667a;margin-top:2px">per hari</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="lbl">KALORI BAKAR</div><div style="font-size:21px;font-weight:800;color:#c4b5fd;margin-top:3px">${s.totalBurned.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#55667a;margin-top:2px">kkal 30 hari</div></div>
   </div>
-  <div class="card"><div class="sec-title">🏋️ Durasi Gym 7 Hari</div><canvas id="ch-gym" style="width:100%;height:80px;display:block"></canvas></div>
-  <div class="card"><div class="sec-title">🍜 Kalori Masuk 7 Hari</div><canvas id="ch-cal" style="width:100%;height:80px;display:block"></canvas></div>`;
-
+  <div class="card"><div class="sec-title">💪 Protein 7 Hari (g)</div><canvas id="ch-prot" style="width:100%;height:80px;display:block"></canvas></div>
+  <div class="card"><div class="sec-title">🏋️ Gym 7 Hari (menit)</div><canvas id="ch-gym" style="width:100%;height:80px;display:block"></canvas></div>`;
   document.getElementById("page-Dashboard").innerHTML=h;
   requestAnimationFrame(()=>{
-    drawLine("ch-spend",s.days7.map(d=>({v:d.spend,label:d.label})),"#fda4af");
-    drawLine("ch-income",s.days7.map(d=>({v:d.income,label:d.label})),"#86efac");
-    drawLine("ch-gym",s.days7.map(d=>({v:d.gymMin,label:d.label})),"#7dd3fc");
-    drawLine("ch-cal",s.days7.map(d=>({v:d.cal,label:d.label})),"#fcd34d");
+    drawLine("ch-spend",s.days7.map(d=>({v:d.spend,label:d.label})),"#fca5a5");
+    drawLine("ch-income",s.days7.map(d=>({v:d.income,label:d.label})),"#6ee7b7");
+    drawLine("ch-gym",s.days7.map(d=>({v:d.gymMin,label:d.label})),"#93c5fd");
+    drawLine("ch-prot",s.days7.map(d=>({v:d.prot,label:d.label})),"#6ee7b7");
     if(document.getElementById("ch-donut"))drawDonut("ch-donut",Object.entries(s.expByCat).map(([k,v])=>({v,color:CAT_COLOR[k]||"#94a3b8"})));
   });
 }
 
-// ══════════════════════════════════════════════════
-// KEUANGAN
-// ══════════════════════════════════════════════════
+// ══ KEUANGAN ═══════════════════════════════
 function rKeu(s){
   const cats=fType==="Pemasukan"?INCOME_CATS:EXPENSE_CATS;
+  if(!fSelCat)fSelCat=cats[0].n;
+  // savings rate
+  const savRate=s.inc>0?Math.max(0,Math.round((s.bal/s.inc)*100)):0;
+  const trendHtml=s.expTrend!==0?`<span class="trend-chip ${s.expTrend>0?"trend-dn":"trend-up"}">${s.expTrend>0?"▲":"▼"} ${Math.abs(s.expTrend)}% vs bulan lalu</span>`:"";
+
+  // spending breakdown bars
+  const topCats=Object.entries(s.expByCat).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxCatVal=topCats[0]?.[1]||1;
+  const barsHtml=topCats.map(([k,v])=>`
+    <div class="spend-bar">
+      <div class="spend-bar-lbl"><span>${k}</span><span style="color:#8899aa">${fmtIDR(v)}</span></div>
+      <div class="spend-track"><div class="spend-fill" style="width:${(v/maxCatVal)*100}%;background:${CAT_COLOR[k]||"#94a3b8"}"></div></div>
+    </div>`).join("");
+
   let h=`<div style="height:14px"></div>
+
+  <!-- Hero balance card -->
+  <div class="fin-hero" style="margin-bottom:11px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="lbl">SALDO BERSIH (30 HARI)</div>
+        <div class="fin-bal" style="color:${s.bal>=0?"#6ee7b7":"#fca5a5"};font-size:28px">${fmtIDR(s.bal)}</div>
+        ${trendHtml}
+      </div>
+      <div style="text-align:right">
+        <div class="lbl">SAVINGS RATE</div>
+        <div style="font-size:24px;font-weight:800;color:#c4b5fd">${savRate}%</div>
+      </div>
+    </div>
+    <div class="fin-row" style="margin-top:12px">
+      <div class="fin-stat"><div class="fin-stat-lbl">▲ MASUK</div><div class="fin-stat-val" style="color:#6ee7b7;font-size:14px">${fmtIDR(s.inc)}</div></div>
+      <div class="fin-stat"><div class="fin-stat-lbl">▼ KELUAR</div><div class="fin-stat-val" style="color:#fca5a5;font-size:14px">${fmtIDR(s.exp)}</div></div>
+    </div>
+  </div>
+
+  <!-- Spending breakdown -->
+  ${topCats.length?`<div class="card"><div class="sec-title">📊 Top Pengeluaran</div>${barsHtml}</div>`:""}
+
+  <!-- Chart -->
   <div class="card">
-    <div class="sec-title">💸 Catat Transaksi</div>
-    <div class="type-row">
-      <button class="type-btn ${fType==="Pemasukan"?"ai":""}" onclick="setFType('Pemasukan')">▲ Pemasukan</button>
-      <button class="type-btn ${fType==="Pengeluaran"?"ae":""}" onclick="setFType('Pengeluaran')">▼ Pengeluaran</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="sec-title" style="margin-bottom:0">📉 Pengeluaran 7 Hari</div>
     </div>
-    <div class="lbl">JUMLAH (RP)</div>
-    <div class="amt-preview" id="amtPrev">${fAmt?fmtIDR(fAmt):"Rp 0"}</div>
+    <canvas id="ch-keu" style="width:100%;height:95px;display:block"></canvas>
+    <div style="margin-top:10px">
+      <div style="font-size:11px;color:#55667a;margin-bottom:6px">Pemasukan</div>
+      <canvas id="ch-keu-inc" style="width:100%;height:70px;display:block"></canvas>
+    </div>
+  </div>
+
+  <!-- Input form -->
+  <div class="card" style="background:linear-gradient(145deg,#151b24,#1a2030);border:1px solid rgba(110,231,183,.1)">
+    <div class="sec-title">➕ Catat Transaksi</div>
+    <div class="pg2" style="margin-bottom:13px">
+      <button class="type-btn ${fType==="Pemasukan"?"ai":""}" style="padding:10px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid ${fType==="Pemasukan"?"#6ee7b7":"rgba(255,255,255,.06)"};background:${fType==="Pemasukan"?"rgba(110,231,183,.15)":"rgba(255,255,255,.04)"};color:${fType==="Pemasukan"?"#6ee7b7":"#8899aa"}" onclick="setFType('Pemasukan')">▲ Pemasukan</button>
+      <button class="type-btn ${fType==="Pengeluaran"?"ae":""}" style="padding:10px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid ${fType==="Pengeluaran"?"#fca5a5":"rgba(255,255,255,.06)"};background:${fType==="Pengeluaran"?"rgba(252,165,165,.15)":"rgba(255,255,255,.04)"};color:${fType==="Pengeluaran"?"#fca5a5":"#8899aa"}" onclick="setFType('Pengeluaran')">▼ Pengeluaran</button>
+    </div>
+
+    <!-- Big amount display -->
+    <div class="amt-hero">
+      <div class="amt-big" id="amtBig">${fAmt?fmtIDR(fAmt):"Rp —"}</div>
+      <div class="amt-sub">${fAmt?fAmt.toLocaleString("id-ID")+" (dengan titik)":"Ketik jumlah di bawah"}</div>
+    </div>
     <input id="fAmt" class="inp" type="number" inputmode="numeric" placeholder="Contoh: 50000" oninput="updAmt(this.value)">
+
     <div class="lbl">KATEGORI</div>
-    <div class="pill-grid pg3" id="catGrid">
-      ${cats.map(c=>`<button class="pill-btn" onclick="selCat(this,'${c}')">${c}</button>`).join("")}
+    <div class="cat-grid">
+      ${cats.map(c=>`<button class="cat-pill ${fSelCat===c.n?"sel":""}" onclick="selCat(this,'${c.n}')"><span class="ce">${c.e}</span><span style="font-size:10px">${c.n}</span></button>`).join("")}
     </div>
-    <input type="hidden" id="fCat" value="${cats[0]}">
+    <input type="hidden" id="fCat" value="${fSelCat}">
     <div class="lbl">CATATAN</div>
     <input id="fNote" class="inp" placeholder="Opsional">
     <div class="lbl">TANGGAL</div>
     <input id="fDate" class="inp" type="date" value="${today()}">
-    <button class="btn ${fType==="Pemasukan"?"btn-sage":"btn-rose"}" onclick="addFin()">+ Tambah ${fType}</button>
+    <button class="btn ${fType==="Pemasukan"?"btn-mint":"btn-peach"}" onclick="addFin()">+ Tambah ${fType}</button>
   </div>
-  <div class="card">
-    <div class="sec-title">📉 Pengeluaran 7 Hari</div>
-    <canvas id="ch-keu" style="width:100%;height:90px;display:block"></canvas>
-  </div>
-  <div class="sec-title">Riwayat</div>`;
+
+  <div class="sec-title">Riwayat Transaksi</div>`;
+
   if(!finance.length)h+=`<div class="empty">Belum ada transaksi 🫙</div>`;
   finance.slice(0,40).forEach(f=>{
-    const col=f.type==="Pemasukan"?"#86efac":"#fda4af";
+    const catObj=[...EXPENSE_CATS,...INCOME_CATS].find(c=>c.n===f.category);
+    const ico=catObj?catObj.e:(f.type==="Pemasukan"?"💰":"💳");
+    const col=f.type==="Pemasukan"?"#6ee7b7":"#fca5a5";
     h+=`<div class="card hist">
-      <div class="hist-ico" style="background:${CAT_COLOR[f.category]||"#94a3b8"}18;font-size:16px">${f.type==="Pemasukan"?"💰":{"Makan":"🍜","Transportasi":"🚗","Hiburan":"🎮","Belanja":"🛍️","Kesehatan":"💊","Langganan":"📱"}[f.category]||"💳"}</div>
-      <div class="hist-info">
-        <div class="hist-title">${f.category}${f.note?` · ${f.note}`:""}</div>
-        <div class="hist-sub">${fmtD(f.date)}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:14px;font-weight:700;color:${col}">${f.type==="Pemasukan"?"+":"-"}${fmtIDR(f.amount)}</div>
-      </div>
+      <div class="hist-ico" style="background:${CAT_COLOR[f.category]||"#94a3b8"}18">${ico}</div>
+      <div class="hist-info"><div class="hist-title">${f.category}${f.note?` · ${f.note}`:""}</div><div class="hist-sub">${fmtD(f.date)}</div></div>
+      <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:${col}">${f.type==="Pemasukan"?"+":"-"}${fmtIDR(f.amount)}</div></div>
     </div>`;
   });
   document.getElementById("page-Keuangan").innerHTML=h;
-  // pre-select first cat
   requestAnimationFrame(()=>{
-    const btns=document.querySelectorAll("#catGrid .pill-btn");
-    if(btns.length)btns[0].classList.add("sel");
-    drawLine("ch-keu",s.days7.map(d=>({v:d.spend,label:d.label})),"#fda4af");
+    drawLine("ch-keu",s.days7.map(d=>({v:d.spend,label:d.label})),"#fca5a5");
+    drawLine("ch-keu-inc",s.days7.map(d=>({v:d.income,label:d.label})),"#6ee7b7");
   });
 }
-function updAmt(v){fAmt=parseInt(v)||0;const el=document.getElementById("amtPrev");if(el)el.textContent=fAmt?fmtIDR(fAmt):"Rp 0"}
-function setFType(t){fType=t;fAmt=0;render("Keuangan")}
-function selCat(btn,cat){document.querySelectorAll("#catGrid .pill-btn").forEach(b=>b.classList.remove("sel"));btn.classList.add("sel");document.getElementById("fCat").value=cat}
+function updAmt(v){fAmt=parseInt(v)||0;const b=document.getElementById("amtBig");const s2=document.querySelector(".amt-sub");if(b)b.textContent=fAmt?fmtIDR(fAmt):"Rp —";if(s2)s2.textContent=fAmt?fAmt.toLocaleString("id-ID")+" (dengan titik)":"Ketik jumlah di bawah"}
+function setFType(t){fType=t;fSelCat="";fAmt=0;render("Keuangan")}
+function selCat(btn,cat){document.querySelectorAll(".cat-pill").forEach(b=>b.classList.remove("sel"));btn.classList.add("sel");document.getElementById("fCat").value=cat;fSelCat=cat}
 function addFin(){
-  const amt=parseInt(document.getElementById("fAmt").value)||0;if(!amt)return;
-  finance.unshift({id:Date.now(),type:fType,amount:amt,category:document.getElementById("fCat").value||EXPENSE_CATS[0],note:document.getElementById("fNote").value,date:document.getElementById("fDate").value});
-  fAmt=0;save();render("Keuangan");
+  const amt=parseInt(document.getElementById("fAmt").value)||0;if(!amt){showToast("Masukkan jumlah dulu ya!","⚠️");return}
+  const cat=document.getElementById("fCat").value||EXPENSE_CATS[0].n;
+  finance.unshift({id:Date.now(),type:fType,amount:amt,category:cat,note:document.getElementById("fNote").value,date:document.getElementById("fDate").value});
+  fAmt=0;save();
+  showToast(`${fType} ${fmtIDR(amt)} dicatat! 🎉`,fType==="Pemasukan"?"💚":"🔴");
+  render("Keuangan");
 }
 
-// ══════════════════════════════════════════════════
-// GYM
-// ══════════════════════════════════════════════════
+// ══ GYM ════════════════════════════════════
 function rGym(s){
   const g=GYM_DATA[gType];
   const estLow=Math.round(gDur*g.low*GYM_INTENSITY_MULT[gIntensity]);
   const estHigh=Math.round(gDur*g.high*GYM_INTENSITY_MULT[gIntensity]);
   const estMid=Math.round((estLow+estHigh)/2);
-
-  const gymTypes=Object.entries(GYM_DATA).map(([k,v])=>`
-    <button class="pill-btn ${gType===k?"sel":""}" onclick="setGType('${k}')">
-      <span class="pi">${v.icon}</span>${k}
-    </button>`).join("");
-
-  const intPills=GYM_INTENSITY.map((x,i)=>`
-    <button class="pill-btn ${gIntensity===i?"sel":""}" onclick="setGInt(${i})">${x}</button>`).join("");
-
-  const moodPills=MOOD_OPTS.map((x,i)=>`
-    <button class="pill-btn ${gMood===i?"sel":""}" onclick="setGMood(${i})">${x}</button>`).join("");
-
+  const gymTypes=Object.entries(GYM_DATA).map(([k,v])=>`<button class="pill-btn ${gType===k?"sel":""}" onclick="setGType('${k}')"><span class="pi">${v.icon}</span>${k}</button>`).join("");
+  const intPills=GYM_INTENSITY.map((x,i)=>`<button class="pill-btn ${gIntensity===i?"sel":""}" onclick="setGInt(${i})">${x}</button>`).join("");
+  const moodPills=MOOD_OPTS.map((x,i)=>`<button class="pill-btn ${gMood===i?"sel":""}" onclick="setGMood(${i})">${x}</button>`).join("");
   const durOpts=[15,20,30,45,60,75,90,120];
-  const durPills=durOpts.map(d=>`
-    <button class="pill-btn ${gDur===d?"sel":""}" onclick="setGDur(${d})">${d}<span style="font-size:9px"> mnt</span></button>`).join("");
-
+  const durPills=durOpts.map(d=>`<button class="pill-btn ${gDur===d?"sel":""}" onclick="setGDur(${d})">${d}<span style="font-size:9px"> mnt</span></button>`).join("");
   let h=`<div style="height:14px"></div>
-  <div class="card">
-    <div class="sec-title">🏋️ Jenis Latihan</div>
-    <div class="pill-grid pg3">${gymTypes}</div>
-  </div>
-
-  <div class="gym-detail">
-    <h4>📋 INFO LATIHAN — ${gType.toUpperCase()}</h4>
-    <div style="font-size:12px;color:#e2d9f3;margin-bottom:8px">📌 ${g.desc}</div>
-    <div style="font-size:12px;color:#e2d9f3;margin-bottom:4px">📊 Volume: ${g.reps}</div>
-    <div style="font-size:12px;color:#e2d9f3;margin-bottom:4px">⏳ Istirahat otot: ${g.rest}</div>
-    <div style="font-size:12px;color:#c4b5fd;margin-bottom:10px">💡 Tips: ${g.tip}</div>
-    <div class="burn-row">
-      <div class="burn-box2"><div style="font-size:9px;color:#64748b;font-weight:700;margin-bottom:3px">ESTIMASI BAKAR</div>
-        <div class="burn-val" id="burnLow">${estLow}–${estHigh}</div>
-        <div style="font-size:10px;color:#94a3b8">kkal</div>
-      </div>
-      <div class="burn-box2"><div style="font-size:9px;color:#64748b;font-weight:700;margin-bottom:3px">RATA-RATA</div>
-        <div class="burn-val" id="burnMid">~${estMid}</div>
-        <div style="font-size:10px;color:#94a3b8">kkal</div>
-      </div>
+  <div class="card"><div class="sec-title">🏋️ Jenis Latihan</div><div class="pg3">${gymTypes}</div></div>
+  <div style="background:rgba(196,181,253,.07);border:1px solid rgba(196,181,253,.18);border-radius:16px;padding:14px;margin-bottom:11px">
+    <div style="font-size:11px;font-weight:700;color:#c4b5fd;letter-spacing:.6px;margin-bottom:10px">📋 INFO — ${gType.toUpperCase()}</div>
+    <div style="font-size:12px;color:#d4c5fd;margin-bottom:6px">📌 ${g.desc}</div>
+    <div style="font-size:12px;color:#d4c5fd;margin-bottom:4px">📊 ${g.reps} &nbsp;·&nbsp; ⏳ Istirahat: ${g.rest}</div>
+    <div style="font-size:12px;color:#c4b5fd;margin-bottom:10px">💡 ${g.tip}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--bg2);border-radius:11px;padding:10px;text-align:center"><div style="font-size:9px;color:#55667a;font-weight:700">ESTIMASI BAKAR</div><div style="font-size:20px;font-weight:800;color:#c4b5fd">${estLow}–${estHigh}</div><div style="font-size:10px;color:#8899aa">kkal</div></div>
+      <div style="background:var(--bg2);border-radius:11px;padding:10px;text-align:center"><div style="font-size:9px;color:#55667a;font-weight:700">RATA-RATA</div><div style="font-size:20px;font-weight:800;color:#c4b5fd">~${estMid}</div><div style="font-size:10px;color:#8899aa">kkal</div></div>
     </div>
-    <div style="font-size:10px;color:#4b5563">Sumber: Compendium of Physical Activities (Ainsworth 2011) · BB 70kg</div>
+    <div style="font-size:10px;color:#4b5563;margin-top:8px">📚 Compendium of Physical Activities (Ainsworth 2011) · BB 70kg</div>
   </div>
-
   <div class="card">
-    <div class="sec-title">⏱️ Durasi</div>
-    <div class="pill-grid pg4">${durPills}</div>
-    <div class="sec-title">💥 Intensitas</div>
-    <div class="pill-grid pg4">${intPills}</div>
-    <div class="sec-title">😊 Mood Hari Ini</div>
-    <div class="pill-grid pg4">${moodPills}</div>
-    <div class="lbl">CATATAN TAMBAHAN</div>
-    <input id="gNote" class="inp" placeholder="Opsional: beban, set, reps...">
+    <div class="sec-title">⏱️ Durasi</div><div class="pg4">${durPills}</div>
+    <div class="sec-title">💥 Intensitas</div><div class="pg4">${intPills}</div>
+    <div class="sec-title">😊 Mood</div><div class="pg4">${moodPills}</div>
+    <div class="lbl">CATATAN</div>
+    <input id="gNote" class="inp" placeholder="Beban, set, reps...">
     <div class="lbl">TANGGAL</div>
     <input id="gDate" class="inp" type="date" value="${today()}">
-    <button class="btn btn-lavender" onclick="addGym()">+ Catat Sesi Gym</button>
+    <button class="btn btn-lilac" onclick="addGym()">+ Catat Sesi Gym</button>
   </div>
-
-  <div class="card"><div class="sec-title">📊 Durasi Gym 7 Hari</div><canvas id="ch-gym2" style="width:100%;height:80px;display:block"></canvas></div>
-  <div class="sec-title">Riwayat Gym</div>`;
+  <div class="card"><div class="sec-title">📊 Durasi 7 Hari</div><canvas id="ch-gym2" style="width:100%;height:80px;display:block"></canvas></div>
+  <div class="sec-title">Riwayat</div>`;
   if(!gym.length)h+=`<div class="empty">Ayo mulai gym! 💪</div>`;
   gym.slice(0,30).forEach(g2=>{
     const gi=GYM_DATA[g2.type]||GYM_DATA["Full Body"];
-    h+=`<div class="card hist">
-      <div class="hist-ico" style="background:rgba(196,181,253,.12)">${gi.icon}</div>
-      <div class="hist-info">
-        <div class="hist-title">${g2.type} · ${g2.intensity||"Sedang"} · ${g2.mood||""}</div>
-        <div class="hist-sub">${g2.note?g2.note+" · ":""}${fmtD(g2.date)}</div>
-        <div style="font-size:11px;color:#a78bfa;margin-top:2px">🔥 ~${g2.burned||0} kkal terbakar</div>
-      </div>
-      <span class="tag" style="background:rgba(196,181,253,.12);color:#c4b5fd">${g2.duration} mnt</span>
-    </div>`;
+    h+=`<div class="card hist"><div class="hist-ico" style="background:rgba(196,181,253,.1)">${gi.icon}</div><div class="hist-info"><div class="hist-title">${g2.type} · ${g2.intensity||"Sedang"} · ${g2.mood||""}</div><div class="hist-sub">${g2.note?g2.note+" · ":""}${fmtD(g2.date)}</div><div style="font-size:11px;color:#a78bfa;margin-top:2px">🔥 ~${g2.burned||0} kkal</div></div><span class="tag" style="background:rgba(196,181,253,.1);color:#c4b5fd">${g2.duration} mnt</span></div>`;
   });
   document.getElementById("page-Gym").innerHTML=h;
-  requestAnimationFrame(()=>drawLine("ch-gym2",s.days7.map(d=>({v:d.gymMin,label:d.label})),"#7dd3fc"));
+  requestAnimationFrame(()=>drawLine("ch-gym2",s.days7.map(d=>({v:d.gymMin,label:d.label})),"#93c5fd"));
 }
 function setGType(t){gType=t;render("Gym")}
 function setGInt(i){gIntensity=i;render("Gym")}
@@ -588,79 +589,70 @@ function addGym(){
   const g=GYM_DATA[gType];
   const burned=Math.round(gDur*(g.low+g.high)/2*GYM_INTENSITY_MULT[gIntensity]);
   gym.unshift({id:Date.now(),type:gType,duration:gDur,intensity:GYM_INTENSITY[gIntensity],mood:MOOD_OPTS[gMood],note:document.getElementById("gNote").value,date:document.getElementById("gDate").value,burned});
-  save();render("Gym");
+  save();
+  showToast(`Sesi ${gType} ${gDur} mnt dicatat! 🔥 ~${burned} kkal`,"💪");
+  render("Gym");
 }
 
-// ══════════════════════════════════════════════════
-// MAKAN — food selector + gram calculator
-// ══════════════════════════════════════════════════
+// ══ MAKAN ══════════════════════════════════
 function rMakan(s){
-  const foodKeys=Object.keys(FOOD_DB);
-  // Group
-  const groups={
-    "🍗 Protein Hewani":["Dada Ayam","Paha Ayam","Ayam Goreng","Telur Ayam","Putih Telur","Daging Sapi","Daging Kambing","Ikan Salmon","Ikan Tuna","Ikan Lele","Udang","Cumi"],
-    "🌾 Karbo":["Nasi Putih","Nasi Merah","Roti Tawar","Mie Instan","Oatmeal","Kentang","Kentang Goreng","Jagung"],
-    "🌱 Protein Nabati":["Tahu","Tempe","Kacang Tanah","Kacang Almond"],
-    "🥦 Sayuran":["Bayam","Brokoli","Wortel","Kangkung","Timun"],
-    "🍌 Buah":["Pisang","Apel","Mangga","Alpukat","Semangka","Jeruk"],
-    "🍽️ Masakan Indonesia":["Nasi Goreng","Gado-gado","Soto Ayam","Rendang","Bubur Ayam","Bakso","Mie Goreng"],
-    "🥛 Minuman & Dairy":["Susu Full Cream","Susu Skim","Yogurt Plain","Kopi Hitam","Jus Jeruk"],
-  };
-
   let groupHtml="";
-  for(const[grpName,items] of Object.entries(groups)){
+  for(const[grp,items] of Object.entries(FOOD_GROUPS)){
     const btns=items.map(n=>`<button class="pill-btn ${selFood===n?"sel":""}" onclick="pickFood('${n}')">${n}</button>`).join("");
-    groupHtml+=`<div style="margin-bottom:10px"><div style="font-size:11px;color:#64748b;font-weight:700;margin-bottom:6px">${grpName}</div><div class="pill-grid pg3">${btns}</div></div>`;
+    groupHtml+=`<div style="margin-bottom:11px"><div style="font-size:11px;color:#55667a;font-weight:700;margin-bottom:6px">${grp}</div><div class="pg3">${btns}</div></div>`;
   }
-
   const fd=selFood?FOOD_DB[selFood]:null;
   const isUnit=fd&&fd[5]!=="gram"&&fd[5]!=="ml";
   const unitLabel=fd?fd[5]:"gram";
-  const defaultQty=isUnit?1:100;
+  const defQty=isUnit?1:100;
+  const pqLabel={"complete":"✅ Protein Lengkap","partial":"🟡 Protein Sebagian","plant":"🌱 Protein Nabati"}[fd?.[7]]||"";
 
   let calcSection="";
   if(fd){
-    const mult=isUnit?(FOOD_UNIT_G[selFood]||100)/100:1;
-    calcSection=`
-    <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div style="font-size:12px;font-weight:700;color:var(--teal);margin-bottom:10px">⚖️ ${selFood}</div>
+    calcSection=`<div style="background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.2);border-radius:16px;padding:14px;margin-bottom:11px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:13px;font-weight:700;color:var(--mint)">${selFood}</div>
+        <span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:rgba(110,231,183,.12);color:#6ee7b7">${pqLabel}</span>
+      </div>
+      <div style="font-size:11px;color:#55667a;margin-bottom:10px">📚 Sumber: ${fd[6]}</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <div style="flex:1">
-          <div class="lbl">JUMLAH (${unitLabel.toUpperCase()})</div>
-          <input id="foodQty" class="inp" type="number" inputmode="numeric" value="${defaultQty}" oninput="calcFood(this.value)" style="margin-bottom:0">
-        </div>
-        <div style="font-size:28px">${selFood==="Telur Ayam"?"🥚":selFood.includes("Nasi")?"🍚":selFood.includes("Ayam")||selFood.includes("Daging")?"🍗":"🥗"}</div>
+        <div style="flex:1"><div class="lbl">JUMLAH (${unitLabel.toUpperCase()})</div><input id="foodQty" class="inp" type="number" inputmode="numeric" value="${defQty}" oninput="calcFood(this.value)" style="margin-bottom:0"></div>
       </div>
       <div id="foodCalcResult" class="macro-grid"></div>
-      <div style="font-size:10px;color:#4b5563;margin-top:8px">📚 ${fd[6]}</div>
-      <button class="btn btn-teal" style="margin-top:10px" onclick="addFoodToMeal()">➕ Tambah ke Makan</button>
+      <button class="btn btn-mint" style="margin-top:11px" onclick="addFoodToMeal()">➕ Tambah ke Log Makan</button>
     </div>`;
   }
 
-  // meal items list
+  // total items
   let itemsHtml="";
   if(mealItems.length){
     const totCal=mealItems.reduce((s,x)=>s+x.cal,0);
     const totP=mealItems.reduce((s,x)=>s+x.p,0);
     const totC=mealItems.reduce((s,x)=>s+x.c,0);
     const totF=mealItems.reduce((s,x)=>s+x.f,0);
-    itemsHtml=`<div class="card card-teal" style="margin-bottom:11px">
+    const protPct=Math.min(100,Math.round(totP/PROTEIN_DAILY_GOAL*100));
+    itemsHtml=`<div class="card card-mint">
       <div class="sec-title">🧾 Makanan Dipilih</div>
-      ${mealItems.map((x,i)=>`
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
-        <div><div style="font-size:13px;font-weight:600">${x.name}</div><div style="font-size:11px;color:#64748b">${x.gram}${x.unit} · P:${x.p.toFixed(1)}g K:${x.c.toFixed(1)}g L:${x.f.toFixed(1)}g</div></div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="tag" style="background:rgba(252,211,77,.15);color:#fcd34d">${Math.round(x.cal)} kkal</span>
-          <button onclick="removeFoodItem(${i})" style="background:rgba(253,164,175,.15);border:none;color:#fda4af;border-radius:8px;padding:4px 8px;cursor:pointer;font-size:12px">✕</button>
+      ${mealItems.map((x,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.name}</div>
+        <div style="font-size:11px;color:#55667a">${x.gram}${x.unit} · P:<span style="color:#6ee7b7">${x.p.toFixed(1)}g</span> K:${x.c.toFixed(1)}g L:${x.f.toFixed(1)}g</div></div>
+        <div style="display:flex;align-items:center;gap:7px;flex-shrink:0">
+          <span class="tag" style="background:rgba(253,230,138,.12);color:#fde68a">${Math.round(x.cal)} kkal</span>
+          <button onclick="removeFoodItem(${i})" style="background:rgba(252,165,165,.12);border:none;color:#fca5a5;border-radius:8px;padding:4px 8px;cursor:pointer;font-size:12px">✕</button>
         </div>
       </div>`).join("")}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
-        <div style="font-size:13px;font-weight:700">Total</div>
-        <div class="macro-grid" style="gap:5px;margin-top:0">
-          <div class="macro-box"><div class="macro-val c-amber">${Math.round(totCal)}</div><div class="macro-lbl">kkal</div></div>
-          <div class="macro-box"><div class="macro-val c-sage">${totP.toFixed(1)}</div><div class="macro-lbl">P(g)</div></div>
-          <div class="macro-box"><div class="macro-val c-sky">${totC.toFixed(1)}</div><div class="macro-lbl">K(g)</div></div>
-          <div class="macro-box"><div class="macro-val c-rose">${totF.toFixed(1)}</div><div class="macro-lbl">L(g)</div></div>
+      <div style="margin-top:11px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <div class="macro-grid" style="flex:1;margin-top:0">
+            <div class="macro-box"><div class="macro-val" style="color:#fde68a">${Math.round(totCal)}</div><div class="macro-lbl">kkal</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:#6ee7b7">${totP.toFixed(1)}</div><div class="macro-lbl">Protein</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:#93c5fd">${totC.toFixed(1)}</div><div class="macro-lbl">Karbo</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:#fca5a5">${totF.toFixed(1)}</div><div class="macro-lbl">Lemak</div></div>
+          </div>
+        </div>
+        <div style="margin-top:6px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:#6ee7b7">Protein ${totP.toFixed(1)}g / target ${PROTEIN_DAILY_GOAL}g/hari</span><span style="color:#55667a">${protPct}%</span></div>
+          <div style="background:rgba(255,255,255,.06);border-radius:6px;height:6px"><div style="width:${protPct}%;background:linear-gradient(90deg,#34d399,#6ee7b7);border-radius:6px;height:6px;transition:width .4s"></div></div>
         </div>
       </div>
     </div>`;
@@ -671,45 +663,27 @@ function rMakan(s){
   let h=`<div style="height:14px"></div>
   <div class="card">
     <div class="sec-title">🕐 Waktu Makan</div>
-    <div class="pill-grid pg4">${timePills}</div>
+    <div class="pg4">${timePills}</div>
     <div class="sec-title" style="margin-top:4px">🍱 Pilih Makanan</div>
     ${groupHtml}
   </div>
-  ${calcSection}
-  ${itemsHtml}
-  ${mealItems.length?`
-  <div class="card">
-    <div class="lbl">TANGGAL</div>
-    <input id="mDate" class="inp" type="date" value="${today()}">
-    <button class="btn btn-amber" onclick="saveMeal()">💾 Simpan Log Makan</button>
-    <button class="btn" style="background:rgba(253,164,175,.15);color:#fda4af;margin-top:8px" onclick="clearMeal()">🗑 Reset Pilihan</button>
-  </div>`:""}
-  <div class="card"><div class="sec-title">📊 Kalori 7 Hari</div><canvas id="ch-cal2" style="width:100%;height:80px;display:block"></canvas></div>
+  ${calcSection}${itemsHtml}
+  ${mealItems.length?`<div class="card"><div class="lbl">TANGGAL</div><input id="mDate" class="inp" type="date" value="${today()}"><button class="btn btn-sand" onclick="saveMeal()">💾 Simpan Log Makan</button><button class="btn btn-ghost" style="margin-top:8px" onclick="clearMeal()">🗑 Reset</button></div>`:""}
+  <div class="card"><div class="sec-title">📊 Kalori & Protein 7 Hari</div><canvas id="ch-cal2" style="width:100%;height:80px;display:block"></canvas><div style="font-size:11px;color:#55667a;margin:8px 0 4px">Protein (g)</div><canvas id="ch-prot2" style="width:100%;height:70px;display:block"></canvas></div>
   <div class="sec-title">Riwayat Makan</div>`;
-
   if(!meals.length)h+=`<div class="empty">Belum ada log makan 🍽️</div>`;
   meals.slice(0,30).forEach(m=>{
-    h+=`<div class="card hist">
-      <div class="hist-ico" style="background:rgba(252,211,77,.1)">${MEAL_EMOJI[m.time]||"🍽️"}</div>
-      <div class="hist-info">
-        <div class="hist-title">${m.items?m.items.map(x=>x.name).join(", "):m.menu||"Makanan"}</div>
-        <div class="hist-sub">${m.time} · ${fmtD(m.date)}</div>
-      </div>
-      ${m.totalCal?`<span class="tag" style="background:rgba(252,211,77,.12);color:#fcd34d">${m.totalCal} kkal</span>`:""}
-    </div>`;
+    const prot=m.totalProt?`<div style="font-size:11px;color:#6ee7b7;margin-top:2px">🥩 ${m.totalProt.toFixed(1)}g protein</div>`:"";
+    h+=`<div class="card hist"><div class="hist-ico" style="background:rgba(253,230,138,.1)">${MEAL_EMOJI[m.time]||"🍽️"}</div><div class="hist-info"><div class="hist-title">${m.items?m.items.map(x=>x.name).join(", "):"Makanan"}</div><div class="hist-sub">${m.time} · ${fmtD(m.date)}</div>${prot}</div>${m.totalCal?`<span class="tag" style="background:rgba(253,230,138,.1);color:#fde68a">${m.totalCal} kkal</span>`:""}</div>`;
   });
-
   document.getElementById("page-Makan").innerHTML=h;
   requestAnimationFrame(()=>{
-    drawLine("ch-cal2",s.days7.map(d=>({v:d.cal,label:d.label})),"#fcd34d");
-    if(selFood)calcFood(isUnit?1:100);
+    drawLine("ch-cal2",s.days7.map(d=>({v:d.cal,label:d.label})),"#fde68a");
+    drawLine("ch-prot2",s.days7.map(d=>({v:d.prot,label:d.label})),"#6ee7b7");
+    if(selFood)calcFood(isUnit?1:defQty);
   });
 }
-function pickFood(name){
-  selFood=name;render("Makan");
-  // scroll to calc
-  setTimeout(()=>{const el=document.querySelector(".cal-calc,[style*='rgba(45,212,191,.08)']");if(el)el.scrollIntoView({behavior:"smooth",block:"nearest"})},100);
-}
+function pickFood(n){selFood=n;render("Makan")}
 function calcFood(qty){
   const fd=FOOD_DB[selFood];if(!fd)return;
   const el=document.getElementById("foodCalcResult");if(!el)return;
@@ -717,19 +691,15 @@ function calcFood(qty){
   const unitG=FOOD_UNIT_G[selFood]||100;
   const mult=fd[5]==="gram"||fd[5]==="ml"?q/100:q*unitG/100;
   const cal=fd[0]*mult,p=fd[1]*mult,c=fd[2]*mult,f=fd[3]*mult;
-  el.innerHTML=`
-    <div class="macro-box"><div class="macro-val c-amber">${cal.toFixed(0)}</div><div class="macro-lbl">kkal</div></div>
-    <div class="macro-box"><div class="macro-val c-sage">${p.toFixed(1)}</div><div class="macro-lbl">Protein</div></div>
-    <div class="macro-box"><div class="macro-val c-sky">${c.toFixed(1)}</div><div class="macro-lbl">Karbo</div></div>
-    <div class="macro-box"><div class="macro-val c-rose">${f.toFixed(1)}</div><div class="macro-lbl">Lemak</div></div>`;
+  el.innerHTML=`<div class="macro-box"><div class="macro-val" style="color:#fde68a">${cal.toFixed(0)}</div><div class="macro-lbl">kkal</div></div><div class="macro-box"><div class="macro-val" style="color:#6ee7b7">${p.toFixed(1)}</div><div class="macro-lbl">Protein</div></div><div class="macro-box"><div class="macro-val" style="color:#93c5fd">${c.toFixed(1)}</div><div class="macro-lbl">Karbo</div></div><div class="macro-box"><div class="macro-val" style="color:#fca5a5">${f.toFixed(1)}</div><div class="macro-lbl">Lemak</div></div>`;
 }
 function addFoodToMeal(){
   const fd=FOOD_DB[selFood];if(!fd)return;
-  const qtyEl=document.getElementById("foodQty");
-  const qty=parseFloat(qtyEl?.value)||1;
+  const qty=parseFloat(document.getElementById("foodQty")?.value)||1;
   const unitG=FOOD_UNIT_G[selFood]||100;
   const mult=fd[5]==="gram"||fd[5]==="ml"?qty/100:qty*unitG/100;
   mealItems.push({name:selFood,gram:qty,unit:fd[5],cal:fd[0]*mult,p:fd[1]*mult,c:fd[2]*mult,f:fd[3]*mult});
+  showToast(`${selFood} ditambahkan! 🥗`,"✅");
   selFood="";render("Makan");
 }
 function removeFoodItem(i){mealItems.splice(i,1);render("Makan")}
@@ -738,63 +708,59 @@ function setMTime(t){mTime=t;render("Makan")}
 function saveMeal(){
   if(!mealItems.length)return;
   const totalCal=Math.round(mealItems.reduce((s,x)=>s+x.cal,0));
+  const totalProt=parseFloat(mealItems.reduce((s,x)=>s+x.p,0).toFixed(1));
   const dateEl=document.getElementById("mDate");
-  meals.unshift({id:Date.now(),time:mTime,items:[...mealItems],totalCal,date:dateEl?.value||today()});
+  meals.unshift({id:Date.now(),time:mTime,items:[...mealItems],totalCal,totalProt,date:dateEl?.value||today()});
+  const protMsg=totalProt>0?` · ${totalProt}g protein`:"";
+  showToast(`Log ${mTime} disimpan! ${totalCal} kkal${protMsg}`,"🍜");
   mealItems=[];save();render("Makan");
 }
 
-// ══════════════════════════════════════════════════
-// SARAN
-// ══════════════════════════════════════════════════
+// ══ SARAN ══════════════════════════════════
 function rSaran(s){
   let h=`<div style="height:14px"></div>
-  <div class="card card-teal">
+  <div class="card card-mint">
     <div class="sec-title">🔑 Anthropic API Key</div>
     <input id="apiKeyInput" class="inp" type="password" placeholder="sk-ant-..." value="${localStorage.getItem("pt_apikey")||""}">
-    <p class="api-note">Key tersimpan di device kamu saja. Dapatkan di <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
-    <button class="btn btn-teal" style="margin-top:10px" onclick="saveKey()">💾 Simpan Key</button>
+    <p style="font-size:11px;color:#55667a;margin-top:4px;line-height:1.6">Key tersimpan di device kamu. Dapatkan di <a href="https://console.anthropic.com" target="_blank" style="color:#6ee7b7">console.anthropic.com</a></p>
+    <button class="btn btn-mint" style="margin-top:11px" onclick="saveKey()">💾 Simpan Key</button>
   </div>
-  <div class="card card-lavender">
+  <div class="card card-lilac">
     <div class="sec-title">✨ Saran Personal AI</div>
-    <div style="font-size:12px;color:#94a3b8;margin-bottom:13px">AI analisis data kamu dan kasih saran actionable.</div>
-    <div class="stat-grid" style="margin-bottom:13px">
-      <div class="stat-box"><div class="lbl">SALDO</div><div style="font-size:13px;font-weight:700;color:${s.bal>=0?"#86efac":"#fda4af"};margin-top:3px">${fmtIDR(s.bal)}</div></div>
-      <div class="stat-box"><div class="lbl">GYM 30H</div><div style="font-size:13px;font-weight:700;color:#7dd3fc;margin-top:3px">${s.gym30.length}x</div></div>
-      <div class="stat-box"><div class="lbl">AVG KALORI</div><div style="font-size:13px;font-weight:700;color:#fcd34d;margin-top:3px">${s.avgCal||0} kkal</div></div>
-      <div class="stat-box"><div class="lbl">KALORI BAKAR</div><div style="font-size:13px;font-weight:700;color:#c4b5fd;margin-top:3px">${s.totalBurned.toLocaleString("id-ID")}</div></div>
+    <div style="font-size:12px;color:#8899aa;margin-bottom:13px">AI analisis data kamu dan kasih saran actionable.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px">
+      <div style="background:var(--bg2);border-radius:12px;padding:11px"><div class="lbl">SALDO</div><div style="font-size:13px;font-weight:700;color:${s.bal>=0?"#6ee7b7":"#fca5a5"};margin-top:3px">${fmtIDR(s.bal)}</div></div>
+      <div style="background:var(--bg2);border-radius:12px;padding:11px"><div class="lbl">GYM 30H</div><div style="font-size:13px;font-weight:700;color:#93c5fd;margin-top:3px">${s.gym30.length}x</div></div>
+      <div style="background:var(--bg2);border-radius:12px;padding:11px"><div class="lbl">KALORI RATA</div><div style="font-size:13px;font-weight:700;color:#fde68a;margin-top:3px">${s.avgCal||0} kkal</div></div>
+      <div style="background:var(--bg2);border-radius:12px;padding:11px"><div class="lbl">PROTEIN RATA</div><div style="font-size:13px;font-weight:700;color:#6ee7b7;margin-top:3px">${s.avgProt||0}g</div></div>
     </div>
-    <button class="btn btn-lavender" id="saranBtn" onclick="mintaSaran()">✨ Minta Saran AI</button>
+    <button class="btn btn-lilac" id="saranBtn" onclick="mintaSaran()">✨ Minta Saran AI</button>
   </div>
   <div id="saranResult"></div>`;
   document.getElementById("page-Saran").innerHTML=h;
 }
-function saveKey(){const k=document.getElementById("apiKeyInput").value.trim();if(!k)return;localStorage.setItem("pt_apikey",k);alert("✅ API key tersimpan!")}
+function saveKey(){const k=document.getElementById("apiKeyInput").value.trim();if(!k)return;localStorage.setItem("pt_apikey",k);showToast("API key tersimpan!","🔑")}
 async function mintaSaran(){
   const key=localStorage.getItem("pt_apikey")||"";
-  if(!key){alert("Masukkan API key dulu! 🔑");return}
+  if(!key){showToast("Masukkan API key dulu!","⚠️");return}
   const btn=document.getElementById("saranBtn");btn.textContent="⏳ Menganalisis...";btn.disabled=true;
   const s=stats();
   const recentMeals=meals.slice(0,5).map(m=>m.items?m.items.map(x=>x.name).join(", "):"").join("; ");
-  const prompt=`Kamu adalah asisten kesehatan & keuangan personal Gen Z Indonesia. Bahasa informal, relatable, actionable. Berikan 4 saran spesifik berdasarkan data nyata pengguna:
-
-Keuangan (30 hari): Pemasukan ${fmtIDR(s.inc)}, Pengeluaran ${fmtIDR(s.exp)}, Saldo ${fmtIDR(s.bal)}, Pengeluaran terbesar: ${s.topCat||"tidak ada data"}
-Gym (30 hari): ${s.gym30.length} sesi, terakhir gym: ${s.lastGym||"belum pernah"}, total kalori terbakar: ~${s.totalBurned} kkal
-Kalori rata-rata (7 hari): ${s.avgCal||0} kkal/hari
-Makanan terakhir dikonsumsi: ${recentMeals||"belum ada data"}
-
-Format: 4 bullet poin, tiap poin mulai dengan emoji relevan, maks 2 kalimat, langsung to the point tanpa intro.`;
+  const prompt=`Kamu asisten kesehatan & keuangan personal Gen Z Indonesia. Bahasa informal, relatable, actionable. Berikan 4 saran spesifik berdasarkan:
+Keuangan (30h): Masuk ${fmtIDR(s.inc)}, Keluar ${fmtIDR(s.exp)}, Saldo ${fmtIDR(s.bal)}, Top spend: ${s.topCat||"-"}
+Gym (30h): ${s.gym30.length} sesi, total bakar ~${s.totalBurned} kkal
+Nutrisi (7h): ${s.avgCal||0} kkal/hari, protein ${s.avgProt||0}g/hari (target 50g)
+Makanan terakhir: ${recentMeals||"belum ada"}
+Format: 4 bullet poin, emoji relevan di awal, maks 2 kalimat per poin.`;
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:prompt}]})});
     const data=await res.json();
     const txt=data.content?.[0]?.text||"Tidak dapat memuat saran.";
-    document.getElementById("saranResult").innerHTML=`<div class="card card-sage"><div style="font-size:13px;font-weight:700;color:#4ade80;margin-bottom:11px">💡 Saran untuk kamu</div><div class="saran-box">${txt}</div></div>`;
-  }catch(e){document.getElementById("saranResult").innerHTML=`<div class="card"><div style="color:#fda4af;font-size:13px">Error: ${e.message}</div></div>`}
+    document.getElementById("saranResult").innerHTML=`<div class="card card-mint"><div style="font-size:13px;font-weight:700;color:#6ee7b7;margin-bottom:11px">💡 Saran untuk kamu</div><div class="saran-box">${txt}</div></div>`;
+  }catch(e){document.getElementById("saranResult").innerHTML=`<div class="card"><div style="color:#fca5a5;font-size:13px">Error: ${e.message}</div></div>`}
   btn.textContent="✨ Minta Saran AI";btn.disabled=false;
 }
 
-// ══════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════
 render("Dashboard");
 </script>
 </body>
